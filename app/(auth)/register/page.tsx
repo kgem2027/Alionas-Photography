@@ -5,6 +5,8 @@ import Link from 'next/link'
 import ShinyText from '@/components/ui/ShinyText'
 import Image from 'next/image'
 import CircularText from '@/components/CircularText'
+import SideRays from '@/components/SideRays'
+import {signIn} from 'next-auth/react'
 
 export default function Register() {
   const router = useRouter()
@@ -41,6 +43,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-900">
+      <SideRays speed={2.5} rayColor1="#EAB308" rayColor2="#96c8ff" intensity={2} spread={2} origin="top-left" tilt={0} saturation={1.5} blend={0.75} falloff={1.6} opacity={1.0} className="w-screen h-screen" />
       <div className="fixed bottom-0 right-0">
         <Image src="/authImage1.png" alt="Auth Image" width={300} height={400} className="object-cover" />
         <div className="absolute top-56 left-36">
@@ -61,6 +64,14 @@ export default function Register() {
                 {loading ? "Loading..." : "Register"}
               </button>
             </form>
+            
+            
+                        <button
+                          onClick={() => signIn("google", { callbackUrl: "/home" })}
+                          className="w-full border border-gray-300 text-white py-2.5 rounded-lg text-sm hover:bg-neutral-800 transition-colors"
+                        >
+                          Register with Google
+                        </button>
             <p className="text-gray-500 text-sm mt-6">Already have an account? <Link className="text-yellow-400 hover:underline" href="/login">Login</Link></p>
           </div>
         </div>
