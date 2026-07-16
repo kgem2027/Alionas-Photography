@@ -3,6 +3,7 @@ import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/app/(auth)/Navbar";
+import { Dancing_Script, Bodoni_Moda } from 'next/font/google';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -10,10 +11,22 @@ export const metadata: Metadata = {
   title: "Aliona Photography",
   description: "Professional photography services",
 };
+const dancingScript = Dancing_Script({
+  subsets: ['latin'],
+  weight: ['400', '700'], 
+  variable: '--font-dancing-script',
+  display: 'swap',
+});
 
+const bodoniModa = Bodoni_Moda({
+  subsets: ['latin'],
+  weight: ['400', '900'],
+  variable: '--font-bodoni-moda',
+  display: 'swap',
+});
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans", bodoniModa.variable, dancingScript.variable, geist.variable)}>
       <body>
         {children}
         <Navbar />
@@ -21,3 +34,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
