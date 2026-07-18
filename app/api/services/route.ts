@@ -3,11 +3,6 @@ import {auth} from "@/lib/auth";
 import {NextResponse} from "next/server";
 
 export async function GET() {
-    const session = await auth()
-    if (!session?.user?.id) {
-        return NextResponse.json({error: "You must be logged in to view services"}, {status: 401})
-    }
-
     try {
         const services = await prisma.service.findMany({
             where: {active: true},

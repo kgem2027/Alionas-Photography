@@ -1,5 +1,6 @@
 import {prisma} from "@/lib/prisma";
 import {auth} from "@/lib/auth";
+import {getOwnedBooking} from "@/lib/bookings";
 import {NextResponse} from "next/server";
 
 export async function POST(req: Request) {
@@ -45,19 +46,33 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
     const session = await auth();
     if (!session?.user?.id) {
         return NextResponse.json({error: "You must be logged in"}, {status: 401});
     }
 
-    const isAdmin = (session.user as {role?: string}).role === "Admin";
+    const isAdmin = session.user.role === "Admin";
+    const bookingId = new URL(req.url).searchParams.get("id");
 
-    const bookings = await prisma.bookings.findMany({
-        where: isAdmin ? {} : {userId: session.user.id},
-        include: {service: true},
-        orderBy: {shootDate: "asc"}
-    });
+    try {
+        if (bookingId) {
+            const booking = await getOwnedBooking(bookingId, session);
+            if (!booking) {
+                return NextResponse.json({error: "Booking not found"}, {status: 404});
+            }
 
-    return NextResponse.json({bookings});
+            return NextResponse.json({booking});
+        }
+
+        const bookings = await prisma.bookings.findMany({
+            where: isAdmin ? {} : {userId: session.user.id},
+            include: {service: true},
+            orderBy: {shootDate: "asc"}
+        });
+
+        return NextResponse.json({bookings});
+    } catch {
+        return NextResponse.json({error: "Internal server error"}, {status: 500});
+    }
 }
