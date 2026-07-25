@@ -18,7 +18,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email: credentials.email as string },
         });
 
-        if (!user) return null;
+        if (!user || !user.password) return null;
 
         const valid = await bcrypt.compare(
           credentials.password as string,
@@ -32,16 +32,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
+      if (account?.provider === "google" && profile?.email) {
+        const dbUser = await prisma.user.upsert({
+          where: { email: profile.email },
+          update: {},
+          create: {
+            email: profile.email,
+            name: profile.name ?? profile.email,
+          },
+        });
+        token.id = dbUser.id;
+        token.role = dbUser.role;
+        return token;
+      }
+
       if (user) {
         token.id = user.id;
-        token.role = (user as { role: string }).role;
+        token.role = user.role;
       }
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id as string;
-      (session.user as { role?: string }).role = token.role as string;
+      session.user.role = token.role;
       return session;
     },
   },

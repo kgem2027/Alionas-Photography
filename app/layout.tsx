@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-import Navbar from "@/app/(auth)/Navbar";
 import { Dancing_Script, Bodoni_Moda } from 'next/font/google';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -29,7 +28,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={cn("font-sans", bodoniModa.variable, dancingScript.variable, geist.variable)}>
       <body>
         {children}
-        <Navbar />
         </body>
     </html>
   );
