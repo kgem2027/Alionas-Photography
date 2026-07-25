@@ -14,7 +14,10 @@ export default function Booking() {
   const router = useRouter(); //used to take users to confirmation page after booking is successful
   const [formData, setFormData] = useState({
     serviceId: "",
-    location: "",
+    streetAddress: "",
+    zipCode: "",
+    city: "",
+    state: "",
     accomodations: "",
     shootDate: ""
   })
@@ -58,7 +61,10 @@ export default function Booking() {
         setSuccess("Booking Successful")
         setFormData({
           serviceId: "",
-          location: "",
+          streetAddress: "",
+          zipCode: "",
+          city: "",
+          state: "",
           accomodations: "",
           shootDate: ""
         })
@@ -92,13 +98,16 @@ export default function Booking() {
                     saturation={0.4}
                 />
                 </div>
-      <img className="brightness-75 h-150" src={'/bookingBackdrop.png'} alt={'Booking Backdrop'}/>
+      <img className="brightness-75 h-175" src={'/bookingBackdrop.png'} alt={'Booking Backdrop'}/>
       <div className=" px-4 py-2.5 absolute z-1">
         <div className="text-white focus:outline-none focus:border-yellow-300 text-md">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-4 max-w-75">
             <div className="flex flex-col font-bold text-black gap-4">
-          <input className="w-full px-3 py-2 rounded border" placeholder="Location" name="location" value={formData.location} onChange={handleChange}/>
+          <input className="w-full px-3 py-2 rounded border" placeholder="Street Address" name="streetAddress" value={formData.streetAddress} onChange={handleChange}/>
+          <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="Zip Code" name="zipCode" value={formData.zipCode} onChange={handleChange}/>
+          <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="City" name="city" value={formData.city} onChange={handleChange}/>
+          <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="State" name="state" value={formData.state} onChange={handleChange}/>
           <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="Accommodations" name="accomodations" value={formData.accomodations} onChange={handleChange}/>
           <input className="w-full px-3 py-2 rounded border font-bold text-black" type="date" name="shootDate" value={formData.shootDate} onChange={handleChange}/>
           <select className="w-full px-3 py-2 rounded border font-bold text-black" name="serviceId" value={formData.serviceId} onChange={handleChange}>

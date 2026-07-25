@@ -31,7 +31,10 @@ model Bookings {
   createdAt     DateTime      @default(now())
   serviceId     String
   userId        String
-  location      String
+  streetAddress String
+  zipCode String
+  city String
+  state String 
   accomodations String
   shootDate     DateTime
   status        BookingStatus @default(PENDING)

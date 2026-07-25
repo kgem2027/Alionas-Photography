@@ -1,13 +1,10 @@
-import {prisma} from "@/lib/prisma";
 import {auth} from "@/lib/auth";
+import {getActiveServices, createService} from "@/lib/services";
 import {NextResponse} from "next/server";
 
 export async function GET() {
     try {
-        const services = await prisma.service.findMany({
-            where: {active: true},
-            orderBy: {name: "asc"}
-        })
+        const services = await getActiveServices()
         return NextResponse.json({services}, {status: 200})
     } catch {
         return NextResponse.json({error: "Internal server error"}, {status: 500})
@@ -31,14 +28,7 @@ export async function POST(req: Request) {
     }
 
     try {
-        const service = await prisma.service.create({
-            data: {
-                name,
-                price,
-                description,
-                active: true
-            }
-        })
+        const service = await createService({name, price, description})
         return NextResponse.json({service}, {status: 201})
     } catch {
         return NextResponse.json({error: "Internal server error"}, {status: 500})

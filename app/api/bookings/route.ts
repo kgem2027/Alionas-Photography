@@ -1,6 +1,5 @@
-import {prisma} from "@/lib/prisma";
 import {auth} from "@/lib/auth";
-import {getOwnedBooking} from "@/lib/bookings";
+import {createBooking, getOwnedBooking, getUserBookings} from "@/lib/bookings";
 import {NextResponse} from "next/server";
 
 export async function POST(req: Request) {
@@ -10,11 +9,11 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const {serviceId, location, accomodations, shootDate} = body;
+    const {serviceId, streetAddress, zipCode, city, state, accomodations, shootDate} = body;
 
-    if (!serviceId || !location || !accomodations || !shootDate) {
+    if (!serviceId || !streetAddress || !zipCode || !city || !state || !accomodations || !shootDate) {
         return NextResponse.json(
-            {error: "serviceId, location, accomodations, and shootDate are required"},
+            {error: "serviceId, streetAddress, zipCode, city, state, accomodations, and shootDate are required"},
             {status: 400}
         );
     }
@@ -25,23 +24,23 @@ export async function POST(req: Request) {
     }
 
     try {
-        const service = await prisma.service.findUnique({where: {id: serviceId}});
-        if (!service || !service.active) {
+        const booking = await createBooking(session.user.id, {
+            serviceId,
+            streetAddress,
+            zipCode,
+            city,
+            state,
+            accomodations,
+            shootDate: parsedDate
+        });
+
+        if (!booking) {
             return NextResponse.json({error: "Selected service is not available"}, {status: 400});
         }
 
-        const booking = await prisma.bookings.create({
-            data: {
-                serviceId,
-                userId: session.user.id,
-                location,
-                accomodations,
-                shootDate: parsedDate
-            }
-        });
-
         return NextResponse.json({booking}, {status: 201});
-    } catch {
+    } catch (error) {
+        console.error("Error creating booking", error);
         return NextResponse.json({error: "Internal server error"}, {status: 500});
     }
 }
@@ -52,7 +51,6 @@ export async function GET(req: Request) {
         return NextResponse.json({error: "You must be logged in"}, {status: 401});
     }
 
-    const isAdmin = session.user.role === "Admin";
     const bookingId = new URL(req.url).searchParams.get("id");
 
     try {
@@ -65,11 +63,7 @@ export async function GET(req: Request) {
             return NextResponse.json({booking});
         }
 
-        const bookings = await prisma.bookings.findMany({
-            where: isAdmin ? {} : {userId: session.user.id},
-            include: {service: true},
-            orderBy: {shootDate: "asc"}
-        });
+        const bookings = await getUserBookings(session);
 
         return NextResponse.json({bookings});
     } catch {
