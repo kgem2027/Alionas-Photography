@@ -1,10 +1,11 @@
 import {auth} from "@/lib/auth";
-import {getActiveServices, createService} from "@/lib/services";
+import {getServices, createService} from "@/lib/services";
 import {NextResponse} from "next/server";
 
 export async function GET() {
+    const session = await auth()
     try {
-        const services = await getActiveServices()
+        const services = await getServices(session)
         return NextResponse.json({services}, {status: 200})
     } catch {
         return NextResponse.json({error: "Internal server error"}, {status: 500})
