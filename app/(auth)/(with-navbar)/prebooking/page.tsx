@@ -4,14 +4,17 @@ import { AnimateIcon } from "@/components/animate-ui/icons/icon";
 import {useState,useEffect} from "react"
 import LightRays from '@/components/LightRays'
 
-export default function page() {
+export default function Prebooking() {
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(true)
     const [bookings, setBookings] = useState([])
     useEffect(() =>{
+        setLoading(true)
         fetch('/api/bookings')
             .then(res => res.json())
             .then(data => setBookings(data.bookings ?? []))
             .catch(()=> setError('failed to load bookings, try refreshing the page'))
+            .finally(() => setLoading(false))
     }, [])
     const upcomingBooking = bookings.filter(b => b.status === "PENDING" || b.status === "CONFIRMED")
     const pastBooking = bookings.filter(b=> b.status === "COMPLETED" || b.status === "CANCLED")
@@ -48,6 +51,10 @@ export default function page() {
                 </AnimateIcon>
                 </div>
             <div className="flex flex-row items-start gap-2 w-full mt-10 relative">
+                {loading ? (
+                <div className="w-full text-center text-yellow-100 font-bodoni-moda">Loading bookings...</div>
+                ) : (
+                <>
                 <div className='flex flex-1 flex-col text-center mb-10'>
                 <h1 className=" text-5xl font-bold font-dancing-script mb-5 text-yellow-200">Upcoming</h1>
                 <div className="flex flex-col gap-2 text-yellow-100 font-bodoni-moda">
@@ -76,6 +83,8 @@ export default function page() {
                 )}
                 </div>
                 </div>
+                </>
+                )}
                 </div>
             </div>
     )
