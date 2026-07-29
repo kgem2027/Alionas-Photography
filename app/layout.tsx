@@ -3,6 +3,7 @@ import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Dancing_Script, Bodoni_Moda } from 'next/font/google';
+import Providers from "./Providers";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={cn("font-sans", bodoniModa.variable, dancingScript.variable, geist.variable)}>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         </body>
     </html>
   );

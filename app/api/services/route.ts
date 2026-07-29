@@ -1,5 +1,5 @@
 import {auth} from "@/lib/auth";
-import {getServices, createService} from "@/lib/services";
+import {getServices, createService, updateService} from "@/lib/services";
 import {NextResponse} from "next/server";
 
 export async function GET() {
@@ -33,5 +33,29 @@ export async function POST(req: Request) {
         return NextResponse.json({service}, {status: 201})
     } catch {
         return NextResponse.json({error: "Internal server error"}, {status: 500})
+    }
+}
+
+export async function PUT(req: Request) {
+    const session = await auth()
+    if (!session?.user?.id) {
+        return NextResponse.json({error: "You must be logged in to update a service"}, {status: 401})
+    }
+    if (session.user.role !== "Admin") {
+        return NextResponse.json({error: "You must be an admin to update a service"}, {status: 403})
+    }
+
+    const body = await req.json()
+    const {id, name, price, description, active} = body
+
+    if (!id || !name || price === undefined || price === null) {
+        return NextResponse.json({error: "id, name and price are required"}, {status: 400})
+    }
+
+    try{
+        const existingService = await updateService({id, name, price, description, active})
+        return NextResponse.json({existingService}, {status:200})
+    } catch{
+        return NextResponse.json({error: "Internal Server Error"}, {status:500})
     }
 }

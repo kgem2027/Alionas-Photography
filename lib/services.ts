@@ -24,3 +24,15 @@ export async function createService(data: { name: string; price: number; descrip
         }
     });
 }
+
+export async function updateService(data:{id: string, name: string; price: number; description?: string, active:boolean}){
+    return prisma.service.update({
+        where: { id: data.id },
+        data: {
+            name: data.name,
+            price: data.price,
+            description: data.description,
+            active: data.active
+        }
+    })
+}
