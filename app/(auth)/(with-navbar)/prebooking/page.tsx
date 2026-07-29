@@ -4,10 +4,20 @@ import { AnimateIcon } from "@/components/animate-ui/icons/icon";
 import {useState,useEffect} from "react"
 import LightRays from '@/components/LightRays'
 
+interface Booking {
+    id: string;
+    streetAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    status: string;
+    service: { name: string };
+}
+
 export default function Prebooking() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
-    const [bookings, setBookings] = useState([])
+    const [bookings, setBookings] = useState<Booking[]>([])
     useEffect(() =>{
         setLoading(true)
         fetch('/api/bookings')
