@@ -19,7 +19,8 @@ export default function Booking() {
     city: "",
     state: "",
     accomodations: "",
-    shootDate: ""
+    shootDate: "",
+    endTime: ""
   })
   const [error,setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -66,7 +67,8 @@ export default function Booking() {
           city: "",
           state: "",
           accomodations: "",
-          shootDate: ""
+          shootDate: "",
+          endTime: ""
         })
         router.push(`/confirmation?id=${data.booking.id}`)
     }}
@@ -81,7 +83,7 @@ export default function Booking() {
   
   return (
     <div className="bg-neutral-900 min-h-screen flex flex-col items-center justify-center p-8 relative">
-       <div className ="absolute top-0 left-0 w-full h-full z-0">
+       <div className ="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
        <LightRays
                     raysOrigin="bottom-center"
                     raysColor="#ffe89f"
@@ -109,7 +111,8 @@ export default function Booking() {
           <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="City" name="city" value={formData.city} onChange={handleChange}/>
           <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="State" name="state" value={formData.state} onChange={handleChange}/>
           <input className="w-full px-3 py-2 rounded border font-bold text-black" placeholder="Accommodations" name="accomodations" value={formData.accomodations} onChange={handleChange}/>
-          <input className="w-full px-3 py-2 rounded border font-bold text-black" type="date" name="shootDate" value={formData.shootDate} onChange={handleChange}/>
+          <input className="w-full px-3 py-2 rounded border font-bold text-black" type="datetime-local" name="shootDate" value={formData.shootDate} onChange={handleChange}/>
+          <input className="w-full px-3 py-2 rounded border font-bold text-black" type="datetime-local" name="endTime" value={formData.endTime} onChange={handleChange}/>
           <select className="w-full px-3 py-2 rounded border font-bold text-black" name="serviceId" value={formData.serviceId} onChange={handleChange}>
             <option value="">Select Service</option>
             {services.map(s => (

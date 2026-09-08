@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import {Session} from "next-auth";
 
-export async function createReview(session: Session | null, data:{title?: string, description: string}){
+export async function createReview(session: Session | null, data:{title?: string, description: string, rating: number}){
     if (!session?.user?.id) {
         throw new Error("You must be logged in to leave a review")
     }
@@ -12,7 +12,8 @@ export async function createReview(session: Session | null, data:{title?: string
         data: {
             ...data,
             userId: session.user.id
-        }
+        },
+        include:{user:{select:{name: true}}}
     })
 }
 export async function deleteReview(session: Session | null, id: string){
@@ -35,8 +36,9 @@ export async function deleteReview(session: Session | null, id: string){
 export async function getAllReviews(){
     try{
         return await prisma.reviews.findMany({
-            orderBy:{createdAt: "desc"}
-        })
+            orderBy:{createdAt: "desc"},
+            include: {user:{select: {name: true} }
+        }})
     } catch{
         throw new Error("No Reviews exist")
     }

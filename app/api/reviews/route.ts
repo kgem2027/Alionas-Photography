@@ -6,12 +6,12 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request){
     const session = await auth()
     const body = await req.json()
-    const {title, description} = body
+    const {title, description, rating} = body
     if(!description){
         return NextResponse.json({error: "Cannot leave description empty"}, {status: 400})
     }
     try{
-        const review = await createReview(session, {title, description})
+        const review = await createReview(session, {title, description, rating})
         return NextResponse.json({review}, {status:201})
     } catch(error){
         if (error instanceof Error) {

@@ -35,7 +35,7 @@ export default async function Confirmation({
                     <p><span className="font-bold">Service:</span> {booking.service.name}</p>
                     <p><span className="font-bold">Location:</span> {booking.streetAddress}, {booking.city}, {booking.state} {booking.zipCode}</p>
                     <p><span className="font-bold">Accommodations:</span> {booking.accomodations}</p>
-                    <p><span className="font-bold">Date:</span> {booking.shootDate.toLocaleDateString()}</p>
+                    <p><span className="font-bold">Date:</span> {booking.shootDate.toLocaleString()} – {booking.endTime.toLocaleTimeString()}</p>
                     <p><span className="font-bold">Status:</span> {booking.status}</p>
                 </div>
             ) : (

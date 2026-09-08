@@ -1,6 +1,7 @@
 "use client";
 import {useEffect, useState} from "react"
 import {useSession} from "next-auth/react"
+import LightRays from '@/components/LightRays'
 interface Services {
   id: string,
   name: string,
@@ -59,6 +60,7 @@ export default function Services() {
     setLoading(false)
     setSuccess('')
   }
+
   const handleExistingServiceClick = (id:string, name: string, price: string, description: string, active: boolean) =>{
     setLoading(true)
     setError('')
@@ -79,6 +81,7 @@ export default function Services() {
       setLoading(false)
     }
     }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault()
     setLoading(true)
@@ -147,7 +150,24 @@ export default function Services() {
     }
   }
   return (
-    <div className="bg-neutral-900 min-h-screen p-30">
+    <div className="bg-neutral-900 min-h-screen p-30 relative">
+      <div className="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
+        <LightRays
+            raysOrigin="top-right"
+            raysColor="#ffe89f"
+            raysSpeed={0.8}
+            lightSpread={0.6}
+            rayLength={3}
+            followMouse={true}
+            mouseInfluence={0.4}
+            noiseAmount={0}
+            distortion={0}
+            className="custom-rays"
+            pulsating={false}
+            fadeDistance={1.3}
+            saturation={0.4}
+        />
+      </div>
       {isAdmin && (
         <>
           <button onClick={handleClick} className="text-yellow-200 border px-4 py-2 mb-4">
@@ -197,16 +217,14 @@ export default function Services() {
       <div className="justify-center items-center">
         {services.map(s => (
           <div
-            onClick={() => handleExistingServiceClick(s.id, s.name, s.price, s.description, s.active)}
-            className="text-yellow-200 text-xl flex flex-col hover: bg-yellow-300 not-hover:bg-neutral-900"
-            key= {s.id}
+            onClick={isAdmin ? () => handleExistingServiceClick(s.id, s.name, s.price, s.description, s.active) : undefined}
+            className={`font-bodoni-moda text-yellow-200 text-2xl flex flex-col bg-neutral-900 m-10 ${isAdmin ? "hover:bg-yellow-300 cursor-pointer" : ""}`}
+            key={s.id}
           >
-           Service: {s.name}, {s.price} | {s.description}
+          Service: {s.name}, {s.description} | {s.price}
           </div>
-
         ))}
       </div>
-      
     </div>
   )
 }

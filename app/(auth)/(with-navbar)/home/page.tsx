@@ -4,7 +4,7 @@ import LightRays from '@/components/LightRays';
 export default function Home() {
     return (
         <div className="bg-neutral-900 min-h-screen flex flex-col items-start justify-start p-8 position-relative">
-            <div className ="absolute top-0 left-0 w-full h-full z-0">
+            <div className ="fixed top-0 left-0 w-full h-screen z-0 pointer-events-none">
                 <LightRays
                     raysOrigin="top-center"
                     raysColor="#ffe89f"
@@ -49,7 +49,7 @@ export default function Home() {
 
                 <div className="w-full flex flex-row justify-between gap-20 text-center">
                     <div className="flex flex-col  order-2">
-                        <h1 className="text-4xl font-bold text-yellow-200 text-center font-dancing-script">How My Business Started</h1>
+                        <h1 className="mt-20 text-4xl font-bold text-yellow-200 text-center font-dancing-script">How My Business Started</h1>
                         <p className="text-2xl text-yellow-100 mt-2 font-bodoni-moda">
                             At first, I photographed friends and family while investing every dollar I could into learning, better equipment, and improving my craft.
                             My business started with a simple goal: to create meaningful memories for people.
@@ -57,7 +57,7 @@ export default function Home() {
                         </p>
                     </div>
                     <div className="relative shrink-0 self-center mx-8 bg-white p-3 pb-10 shadow-xl order-3">
-                        <img src="/bachelorette_party_photo.png" alt="Bachelorette Party" className="w-80 object-cover" />
+                        <img src="/slavicgirl_photo.png" alt="Slavic Girl" className="w-80 object-cover" />
                         <img src="/thumbtack.png" alt="Thumbtack" className="w-8 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/3" />
                     </div>
                     <div className="relative shrink-0 self-center mx-8 bg-white p-3 pb-10 shadow-xl order-1">
@@ -74,11 +74,10 @@ export default function Home() {
                             I want to photograph families, couples, portraits, and brands, creating timeless images that people will treasure for years to come.
                         </p>
                     </div>
-                    <div className="relative shrink-0 self-center mx-8 bg-white p-3 pb-10 shadow-xl">
-                        <img src="/slavicgirl_photo.png" alt="Slavic Girl" className="w-80 object-cover" />
+                    <div className="relative shrink-0 self-center mx-8 bg-white p-3 pb-10 shadow-xl ">
+                        <img src="/bachelorette_party_photo.png" alt="Bachelorette Party" className="w-80 object-cover" />
                         <img src="/thumbtack.png" alt="Thumbtack" className="w-8 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/3" />
                     </div>
-
                     <div className="flex flex-col ">
                         <h1 className="text-4xl font-bold text-yellow-200 font-dancing-script">My Business Goals</h1>
                         <p className="text-2xl text-yellow-100 mt-2 font-bodoni-moda">
